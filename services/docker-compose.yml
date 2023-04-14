@@ -69,6 +69,7 @@ services:
     image: "confluentinc/cp-zookeeper:${CONFLUENTINC_VERSION}"
     hostname: zookeeper
     container_name: zookeeper
+    user: root
     ports:
       - "2181:2181"
     restart: unless-stopped
@@ -83,6 +84,7 @@ services:
     image: "confluentinc/cp-server:${CONFLUENTINC_VERSION}"
     hostname: broker
     container_name: broker
+    user: root
     depends_on:
       - zookeeper
     ports:
@@ -160,6 +162,7 @@ services:
         CONFLUENTINC_VERSION: ${CONFLUENTINC_VERSION}
     hostname: connect
     container_name: connect
+    user: root
     ports:
       - "8083:8083"
     restart: unless-stopped
@@ -196,6 +199,7 @@ services:
     image: "confluentinc/cp-ksqldb-server:${CONFLUENTINC_VERSION}"
     hostname: ksqldb-server
     container_name: ksqldb-server
+    user: root
     depends_on:
       - broker
       - connect
