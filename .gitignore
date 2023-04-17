@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+# notebooks 
+*.ipynb_checkpoints
+*.ipynb
+
+
+# editor 
+.vscode
 
 # Data
 data
