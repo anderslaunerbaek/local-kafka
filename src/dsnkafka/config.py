@@ -4,6 +4,7 @@ import os
 import socket
 
 DEFAULT_URL: str = "dsnvm1.baekpetersen.dk"
+DEFAULT_TOPIC: str = "alp_msg"
 
 config = {
     "schema_registry": {
