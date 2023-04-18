@@ -1,4 +1,3 @@
-
 # version: "3.9"
 
 # services:
@@ -15,7 +14,6 @@
 #      - ${DATA_DIR}/zoo-data:/var/lib/zookeeper/data
 #      - ${DATA_DIR}/zoo-log:/var/lib/zookeeper/log
 
-
 #   # init-kafka:
 #   #   image: "confluentinc/cp-kafka:7.2.1
 #   #   depends_on:
@@ -31,7 +29,7 @@
 #   #     kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic SENSOR_ID_1 --replication-factor 1 --partitions 10
 #   #     kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic SENSOR_ID_2 --replication-factor 1 --partitions 10
 #   #     kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic SENSOR_ID_3 --replication-factor 1 --partitions 10
-      
+
 #   #     echo -e "Successfully created the following topics:"
 #   #     kafka-topics --bootstrap-server kafka:9092 --list
 #   #     "d
@@ -56,13 +54,6 @@
 #       CONNECT_CLUSTERS_NAME: Connectors
 #       CONNECT_CLUSTERS_URL:  "http://${HOSTNAME_KAFKA_CONNECT}:8083"
 
-
-
-
-
-
-
-
 version: "3.9"
 services:
   zookeeper:
@@ -77,8 +68,8 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     volumes:
-     - ${DATA_DIR}/zoo-data:/var/lib/zookeeper/data
-     - ${DATA_DIR}/zoo-log:/var/lib/zookeeper/log
+      - ${DATA_DIR}/zoo-data:/var/lib/zookeeper/data
+      - ${DATA_DIR}/zoo-log:/var/lib/zookeeper/log
 
   broker:
     image: "confluentinc/cp-server:${CONFLUENTINC_VERSION}"
@@ -97,7 +88,7 @@ services:
       KAFKA_BROKER_RACK: "r1"
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,PLAINTEXT_DIFF_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092,PLAINTEXT_DIFF_HOST://dev.launer.dk:29093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092,PLAINTEXT_DIFF_HOST://${HOST_DNS}:29093
       KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
@@ -114,7 +105,6 @@ services:
       CONFLUENT_SUPPORT_CUSTOMER_ID: "anonymous"
     volumes:
       - ${DATA_DIR}/kafka-data:/var/lib/kafka/data
-
 
   schema-registry:
     image: "confluentinc/cp-schema-registry:${CONFLUENTINC_VERSION}"
@@ -219,11 +209,8 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_REPLICATION_FACTOR: 1
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
-    volumes: 
+    volumes:
       - ${DATA_DIR}/ksqldb:/etc/ksql
-
-
-
 
   # Access the cli by running:
   # > docker compose exec ksqldb-cli ksql http://ksqldb-server:8088
@@ -238,7 +225,7 @@ services:
       - ksqldb-server
     entrypoint: /bin/sh
     tty: true
-    stdin_open: true 
+    stdin_open: true
 
   rest-proxy:
     image: "confluentinc/cp-kafka-rest:${CONFLUENTINC_VERSION}"
