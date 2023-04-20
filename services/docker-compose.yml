@@ -1,59 +1,3 @@
-# version: "3.9"
-
-# services:
-#   zookeeper:
-#     image: ""confluentinc/cp-zookeeper:${CONFLUENTINC_VERSION}""
-#     hostname: ${HOSTNAME_ZOOKEEPER}
-#     container_name: ${HOSTNAME_ZOOKEEPER}
-#     ports:
-#       - "${PORT_ZOOKEEPER}:${PORT_ZOOKEEPER}"
-#     restart: unless-stopped
-#     environment:
-#       ZOOKEEPER_CLIENT_PORT: "${PORT_ZOOKEEPER}"
-#     volumes:
-#      - ${DATA_DIR}/zoo-data:/var/lib/zookeeper/data
-#      - ${DATA_DIR}/zoo-log:/var/lib/zookeeper/log
-
-#   # init-kafka:
-#   #   image: "confluentinc/cp-kafka:7.2.1
-#   #   depends_on:
-#   #     - kafka
-#   #   entrypoint: [ "/bin/sh", "-c" ]
-#   #   command: |
-#   #     "
-#   #     # blocks until kafka is reachable
-#   #     kafka-topics --bootstrap-server kafka:9092 --list
-
-#   #     echo -e "Creating kafka topics"
-#   #     kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic INGESTION --replication-factor 1 --partitions 10
-#   #     kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic SENSOR_ID_1 --replication-factor 1 --partitions 10
-#   #     kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic SENSOR_ID_2 --replication-factor 1 --partitions 10
-#   #     kafka-topics --bootstrap-server kafka:9092 --create --if-not-exists --topic SENSOR_ID_3 --replication-factor 1 --partitions 10
-
-#   #     echo -e "Successfully created the following topics:"
-#   #     kafka-topics --bootstrap-server kafka:9092 --list
-#   #     "d
-
-#   kowl:
-#     image: quay.io/cloudhut/kowl:master # We use the master tag as we want to use the latest features e.g. creation of topics.
-#     hostname: kowl
-#     container_name: kowl
-#     ports:
-#       - "${PORT_KOWL}:8080"
-#     restart: unless-stopped
-#     depends_on:
-#       - zookeeper
-#       - kafka
-#       - kafka-schema-registry
-#       - connect
-#     environment:
-#       KAFKA_BROKERS: "${HOSTNAME_KAFKA}:${PORT_KAFKA_BROKER}"
-#       KAFKA_SCHEMAREGISTRY_ENABLED: true
-#       KAFKA_SCHEMAREGISTRY_URLS: "http://${HOSTNAME_SCHEMA_REGISTRY}:${PORT_SCHEMA_REGISTRY}"
-#       CONNECT_ENABLED: true
-#       CONNECT_CLUSTERS_NAME: Connectors
-#       CONNECT_CLUSTERS_URL:  "http://${HOSTNAME_KAFKA_CONNECT}:8083"
-
 version: "3.9"
 services:
   zookeeper:
@@ -242,3 +186,51 @@ services:
       KAFKA_REST_BOOTSTRAP_SERVERS: "broker:29092"
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27017:27017'
+    hostname: mongo
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+
+  mongo-express:
+    image: mongo-express:latest
+    depends_on:
+      - mongo
+    ports:
+      - 8084:8081
+    hostname: mongo-express
+    container_name: mongo-express
+    restart: unless-stopped
+    user: root
+    environment:
+      MONGO_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/
+    volumes:
+      - ${DATA_DIR}/mongo:/data/db
+
+  mysql:
+    image: "mysql:${MYSQL_VERSION}"
+    hostname: mysql
+    container_name: mysql
+    restart: unless-stopped
+    user: root
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - ${DATA_DIR}/mysql:/var/lib/mysql
