@@ -234,3 +234,16 @@ services:
       - 3306:3306
     volumes:
       - ${DATA_DIR}/mysql:/var/lib/mysql
+
+  postgres:
+    image: "postgres:${PG_VERSION}"
+    hostname: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      PGDATA: /data/postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ${DATA_DIR}/postgres:/data/postgres
