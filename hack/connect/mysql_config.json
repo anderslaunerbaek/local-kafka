@@ -1,0 +1,16 @@
+{
+  "name": "mysql-sink",
+  "config": {
+    "connector.class": "MySqlSink",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "input.data.format": "AVRO",
+    "input.key.format": "AVRO",
+    "topics": "CONSUMPTIONSCHEMA,PRICESCHEMA",
+    "connection.url": "jdbc:mysql://dsnvm3.baekpetersen.dk/db",
+    "connection.user": "user",
+    "connection.password": "password",
+    "pk.mode": "none"
+  }
+}

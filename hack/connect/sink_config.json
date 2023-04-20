@@ -1,13 +1,13 @@
 {
-  "name": "mongo - consumption schema",
+  "name": "mongodb-sink",
   "config": {
     "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
-    "topics": "CONSUMPTIONSCHEMA",
+    "topics": "CONSUMPTIONSCHEMA,PRICESCHEMA",
     "connection.uri": "mongodb://root:root@mongo:27017",
     "database": "hack",
+    "tasks.max": "10",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
-    "value.converter": "org.apache.kafka.connect.storage.StringConverter",
-    "schemas.enable": "true",
-    "collection": "consumption-schema"
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081"
   }
 }
