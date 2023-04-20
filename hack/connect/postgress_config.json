@@ -1,5 +1,5 @@
 {
-  "name": "jdbc-mysql-sink",
+  "name": "jdbc-postgress-sink",
   "config": {
     "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
     "key.converter": "org.apache.kafka.connect.storage.StringConverter",
@@ -8,7 +8,7 @@
     "input.data.format": "AVRO",
     "input.key.format": "AVRO",
     "topics": "CONSUMPTIONSCHEMA,PRICESCHEMA",
-    "connection.url": "jdbc:mysql://dsnvm3.baekpetersen.dk/db",
+    "connection.url": "jdbc:postgresql://dsnvm3.baekpetersen.dk/db",
     "connection.user": "user",
     "connection.password": "password",
     "pk.mode": "kafka",
