@@ -1,0 +1,26 @@
+{
+  "name": "jdbc-postgress-source",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "tasks.max": "1",
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "input.data.format": "AVRO",
+    "input.key.format": "AVRO",
+    "mode": "timestamp+incrementing",
+    "incrementing.column.name": "id",
+    "timestamp.column.name": "dt_created,dt_modied",
+    "connection.url": "jdbc:postgresql://dsnvm3.baekpetersen.dk/db",
+    "connection.user": "user",
+    "connection.password": "password",
+    "table.whitelist": "metadata1",
+    "transforms": "copyFieldToKey,extractKeyFromStruct,removeKeyFromValue",
+    "transforms.copyFieldToKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+    "transforms.copyFieldToKey.fields": "id",
+    "transforms.extractKeyFromStruct.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "transforms.extractKeyFromStruct.field": "id",
+    "transforms.removeKeyFromValue.type": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "transforms.removeKeyFromValue.blacklist": "id",
+    "key.converter": "org.apache.kafka.connect.converters.IntegerConverter"
+  }
+}
