@@ -17,7 +17,7 @@ CREATE STREAM alp_msg (
   value INTEGER
 ) WITH (
   KAFKA_TOPIC = 'alp_msg',
-  PARTITIONS = 1, 
+  PARTITIONS = 10, 
   VALUE_FORMAT = 'avro'
 );    
 ```

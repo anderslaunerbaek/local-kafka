@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   zookeeper:
     image: "confluentinc/cp-zookeeper:${CONFLUENTINC_VERSION}"
@@ -155,7 +154,8 @@ services:
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
     volumes:
       - ${DATA_DIR}/ksqldb:/etc/ksql
-
+  
+  
   # Access the cli by running:
   # > docker compose exec ksqldb-cli ksql http://ksqldb-server:8088
   ksqldb-cli:
@@ -187,63 +187,63 @@ services:
       KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
 
-  mongo:
-    image: mongo:latest
-    restart: always
-    ports:
-      - '27017:27017'
-    hostname: mongo
-    container_name: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-      MONGO_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-      MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+  # mongo:
+  #   image: mongo:latest
+  #   restart: always
+  #   ports:
+  #     - '27017:27017'
+  #   hostname: mongo
+  #   container_name: mongo
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+  #     MONGO_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+  #     MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
 
-  mongo-express:
-    image: mongo-express:latest
-    depends_on:
-      - mongo
-    ports:
-      - 8084:8081
-    hostname: mongo-express
-    container_name: mongo-express
-    restart: unless-stopped
-    user: root
-    environment:
-      MONGO_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
-      MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USERNAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
-      ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/
-    volumes:
-      - ${DATA_DIR}/mongo:/data/db
+  # mongo-express:
+  #   image: mongo-express:latest
+  #   depends_on:
+  #     - mongo
+  #   ports:
+  #     - 8084:8081
+  #   hostname: mongo-express
+  #   container_name: mongo-express
+  #   restart: unless-stopped
+  #   user: root
+  #   environment:
+  #     MONGO_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+  #     MONGO_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USERNAME}
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+  #     ME_CONFIG_MONGODB_URL: mongodb://${MONGO_ROOT_USERNAME}:${MONGO_ROOT_PASSWORD}@mongo:27017/
+  #   volumes:
+  #     - ${DATA_DIR}/mongo:/data/db
 
-  mysql:
-    image: "mysql:${MYSQL_VERSION}"
-    hostname: mysql
-    container_name: mysql
-    restart: unless-stopped
-    user: root
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - 3306:3306
-    volumes:
-      - ${DATA_DIR}/mysql:/var/lib/mysql
+  # mysql:
+  #   image: "mysql:${MYSQL_VERSION}"
+  #   hostname: mysql
+  #   container_name: mysql
+  #   restart: unless-stopped
+  #   user: root
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+  #     MYSQL_DATABASE: ${MYSQL_DATABASE}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - ${DATA_DIR}/mysql:/var/lib/mysql
 
-  postgres:
-    image: "postgres:${PG_VERSION}"
-    hostname: postgres
-    container_name: postgres
-    environment:
-      POSTGRES_USER: ${PG_USER}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
-      PGDATA: /data/postgres
-    ports:
-      - 5432:5432
-    volumes:
-      - ${DATA_DIR}/postgres:/data/postgres
+  # postgres:
+  #   image: "postgres:${PG_VERSION}"
+  #   hostname: postgres
+  #   container_name: postgres
+  #   environment:
+  #     POSTGRES_USER: ${PG_USER}
+  #     POSTGRES_PASSWORD: ${PG_PASSWORD}
+  #     PGDATA: /data/postgres
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - ${DATA_DIR}/postgres:/data/postgres

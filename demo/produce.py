@@ -3,13 +3,12 @@ Example of producing messages to Kafka broker.
 """
 
 from confluent_kafka.serializing_producer import SerializingProducer
-
-from data import DataModel
-
+from dsnkafka.config import DEFAULT_TOPIC, config
 from dsnkafka.log import get_logger
-from dsnkafka.config import config, DEFAULT_TOPIC
 from dsnkafka.registry import get_latest_topic_schema, get_schema_registry_client
 from dsnkafka.serializer import get_serilizer_string_avro
+
+from data import DataModel
 
 logger = get_logger(name=__name__)
 
@@ -36,8 +35,7 @@ def main():
         config=config["schema_registry"]
     )
     logger.info(f"Get schema for topic {DEFAULT_TOPIC}.")
-    value_schema = get_latest_topic_schema(
-        schema_registry_client, topic=DEFAULT_TOPIC)
+    value_schema = get_latest_topic_schema(schema_registry_client, topic=DEFAULT_TOPIC)
 
     logger.info(f"Add kafka configuration with `get_serilizer_string_avro()`.")
     kafka_config = config["kafka"] | get_serilizer_string_avro(

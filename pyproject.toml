@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dsnkafka"
+dynamic = ["version", "dependencies"]
+authors = [
+  { name="Anders Launer Bæk-Petersen", email="anders@launer.dk" },
+]
+description = "TODO"
+readme = {file = "README.md", content-type = "text/markdown"}
+requires-python = ">=3.10"
+classifiers = [
+    "Intended Audience :: Personal use",
+    "Topic :: Software Development :: Build Tools",
+
+    "License :: OSI Approved :: MIT License",
+    
+    "Operating System :: OS Independent",
+
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+
+]
+license = {file = "LICENSE"}
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+version = {file = ["VERSION"]}
+
+[tool.setuptools.packages.find]
+exclude = ["services", "demo", "data"]
+
+[project.optional-dependencies]
+dev = [
+    "black", 
+    "isort",
+]
+
+test = [
+    "pytest"
+]
+
+
+[project.urls]
+Repository = "https://github.com/anderslaunerbaek/local-kafka"
+Issues = "https://github.com/anderslaunerbaek/local-kafka/issues"
