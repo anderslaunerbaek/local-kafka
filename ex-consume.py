@@ -52,9 +52,6 @@ def main():
                     f" {DataModel(ID=msg.key(), **msg.value())}"
                 )
             )
-            import time
-
-            time.sleep(5)
         except KeyboardInterrupt:
             break
 
